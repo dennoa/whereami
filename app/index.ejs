@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>thorr. Insurance Platform</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="IAG Limited">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" href="/assets/images/apple-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,600,700" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNDrY1aFohQ-IflLxbodBG9CeQILmSibA&libraries=places"></script>
+    <style>
+        #loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+        }
+
+        .loader {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 3rem;
+            border: 3px solid #e3e3e3;
+            border-left-color: transparent;
+            display: block;
+            margin: 0 auto;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <div id="loader">
+        <span class="loader" />
+    </div>
+</body>
+
+</html>

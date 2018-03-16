@@ -1,0 +1,60 @@
+$primary: #795DFF !default;
+
+.radio-card-group {
+    display: flex;
+    align-content: left;
+    flex-wrap: wrap;
+}
+
+.card {
+    .radio-card--input-container {
+        display: none;
+    }
+    &.radio-card {
+        .h5 {
+            color: #888888 !important;
+            font-size: 0.9em;
+        }
+        position: relative;
+        text-align: center;
+        padding: 10px;
+        margin-left: 5px;
+        margin-right: 5px;
+        width: 220px;
+        min-height: 240px;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.5);
+        label {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            &:after {
+                position: absolute;
+                width: 10px;
+                height: 20px;
+                right: 20px;
+                top: 15px;
+                content: " ";
+                vertical-align: top;
+                transform: rotate(0deg);
+                border-bottom: 4px solid $primary;
+                border-right: 4px solid $primary;
+                opacity: 0;
+                transition: 0.5s;
+            }
+        }
+        &.selected {
+            box-shadow: 0 1px 3px $primary, 0 1px 2px $primary;
+            label {
+                &:after {
+                    transform: rotate(45deg);  
+                    opacity: 1;
+                    transition: 0.5s;
+                }
+            }
+        }
+    }
+}
