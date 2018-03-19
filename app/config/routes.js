@@ -7,8 +7,7 @@ import Navbar from 'Components/navbar'
 import Footer from 'Components/footer'
 import Home from 'Views/home'
 import Login from 'Views/login'
-import Signup from 'Views/signup'
-import Forgot from 'Views/forgotPassword'
+import Connect from 'Views/connect'
 import Error404 from 'Views/404'
 import ScrollTop from 'Components/scrollTop'
 import Refresh from 'Components/refresh'
@@ -33,8 +32,7 @@ class Routes extends Component {
           <Navbar history={history} />
           <Route path="/" exact component={Home} />
           <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/forgot" component={Forgot} />
+          <Route path="/connect" component={Connect} />
           <Route path="/404" component={Error404} />
           <Footer />
           <ScrollTop />

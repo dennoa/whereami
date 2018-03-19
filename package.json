@@ -22,6 +22,8 @@
     "crypto-js": "3.1.9-1",
     "date-fns": "1.29.0",
     "express": "4.16.2",
+    "firebase": "^4.11.0",
+    "firebaseui": "^2.6.3",
     "flexboxgrid": "6.3.1",
     "jquery": "3.3.1",
     "jwt-decode": "2.2.0",
@@ -80,13 +82,18 @@
     "webpack-dev-server": "2.9.4"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   },
   "postcss": {
     "plugins": {
       "postcss-import": {},
       "postcss-cssnext": {
-        "browsers": ["last 2 versions", "> 5%"],
+        "browsers": [
+          "last 2 versions",
+          "> 5%"
+        ],
         "features": {
           "customProperties": {
             "preserve": true
@@ -99,7 +106,11 @@
   "eslintConfig": {
     "extends": "airbnb",
     "parser": "babel-eslint",
-    "plugins": ["react", "jsx-a11y", "import"],
+    "plugins": [
+      "react",
+      "jsx-a11y",
+      "import"
+    ],
     "env": {
       "es6": true,
       "node": true,
@@ -109,14 +120,26 @@
       "import/resolver": "webpack"
     },
     "rules": {
-      "indent": [0, 2],
-      "semi": ["error", "never"],
+      "indent": [
+        0,
+        2
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
       "arrow-parens": 0,
       "linebreak-style": 0,
       "object-curly-newline": 0,
       "comma-dangle": 0,
-      "react/jsx-indent": [2, 2],
-      "react/jsx-indent-props": [2, 2],
+      "react/jsx-indent": [
+        2,
+        2
+      ],
+      "react/jsx-indent-props": [
+        2,
+        2
+      ],
       "react/require-default-props": 0,
       "max-len": [
         1,
@@ -153,15 +176,21 @@
         2,
         {
           "required": {
-            "every": ["id"]
+            "every": [
+              "id"
+            ]
           }
         }
       ],
       "jsx-a11y/anchor-is-valid": [
         "error",
         {
-          "components": ["Link"],
-          "specialLink": ["to"]
+          "components": [
+            "Link"
+          ],
+          "specialLink": [
+            "to"
+          ]
         }
       ]
     }
