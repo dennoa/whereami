@@ -1,19 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react'
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase'
-import firebaseui from 'firebaseui'
 
-class Login extends Component {
-  componentDidMount() {
-    const ui = new firebaseui.auth.AuthUI(firebase.auth())
-    ui.start('#firebaseui-auth-container', {
-      signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
-      signInSuccessUrl: '/',
-    })
-  }
-
-  render() {
-    return <div id="firebaseui-auth-container" />
-  }
+const uiConfig = {
+  signInFlow: 'popup',
+  signInSuccessUrl: '/',
+  signInOptions: [
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+  ],
 }
+
+const Login = () => (
+  <div className="container">
+    <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+  </div>
+)
 
 export default Login
