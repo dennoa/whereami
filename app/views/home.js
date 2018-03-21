@@ -3,6 +3,7 @@ import firebase from 'firebase'
 import moment from 'moment'
 
 import WhereMap from 'Components/whereMap'
+import onValue from 'Helpers/on-value'
 
 const whenFormat = 'h:mma ddd Do MMMM YYYY'
 
@@ -52,24 +53,19 @@ class Home extends Component {
   handleUserChange(currentUser) {
     if (currentUser) {
       this.setState({ myId: currentUser.uid })
-      const db = firebase.database()
-      db.ref(`connections/${currentUser.uid}`).on('value', connSnaphot => {
-        const connVal = connSnaphot.val() || {}
+      onValue(`connections/${currentUser.uid}`, connValue => {
+        const connVal = connValue || {}
         const myConnections = Object.keys(connVal).map(id => ({ id, name: connVal[id].name }))
         myConnections.forEach(conn => {
-          db.ref(`locations/${conn.id}`).on('value', locSnapshot => {
-            conn.location = locSnapshot.val()
+          onValue(`locations/${conn.id}`, locValue => {
+            conn.location = locValue
             this.setState({ myConnections })
           })
         })
       })
-      db.ref(`users/${currentUser.uid}`).once('value', snapshot => {
-        const val = snapshot.val()
+      onValue(`users/${currentUser.uid}`, val => {
         const myDetails = val || { name: currentUser.displayName }
         this.setState({ myDetails })
-        if (!val) {
-          db.ref(`users/${currentUser.uid}`).set(myDetails)
-        }
       })
     }
   }
@@ -79,11 +75,13 @@ class Home extends Component {
   }
 
   toMarker(conn) {
+    const location = conn.location || { lat: 0, lng: 0, when: Date.now() }
+    const name = conn.name || ' '
     return {
       key: conn.id,
-      position: conn.location,
-      label: conn.name[0],
-      title: `${conn.name} at ${moment(conn.location.when).format(whenFormat)}`,
+      position: location,
+      label: name[0],
+      title: `${name} at ${moment(location.when).format(whenFormat)}`,
     }
   }
 
@@ -96,7 +94,7 @@ class Home extends Component {
       <div>
         <div className="container">
           <WhereMap
-            containerElement={<div style={{ height: '800px' }} />}
+            containerElement={<div style={{ height: '400px' }} />}
             mapElement={<div style={{ height: '100%' }} />}
             center={myLocation}
             markers={markers}

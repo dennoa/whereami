@@ -8,6 +8,8 @@ import Footer from 'Components/footer'
 import Home from 'Views/home'
 import Login from 'Views/login'
 import Connect from 'Views/connect'
+import ManageConnection from 'Views/manage-connection'
+import Profile from 'Views/profile'
 import Error404 from 'Views/404'
 import ScrollTop from 'Components/scrollTop'
 import Refresh from 'Components/refresh'
@@ -33,6 +35,8 @@ class Routes extends Component {
           <Route path="/" exact component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/connect" component={Connect} />
+          <Route path="/manage-connection/:id" component={ManageConnection} />
+          <Route path="/profile" component={Profile} />
           <Route path="/404" component={Error404} />
           <Footer />
           <ScrollTop />

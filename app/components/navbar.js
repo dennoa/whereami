@@ -45,6 +45,9 @@ const Navbar = props => {
               <Link className="nav-item nav-link" to="/connect">
                 Connect
               </Link>
+              <Link className="nav-item nav-link" to="/profile">
+                Profile
+              </Link>
             </div>
           )}
         </div>

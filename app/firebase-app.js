@@ -11,4 +11,18 @@ const app = firebase.initializeApp({
   messagingSenderId: '119725428609',
 })
 
+function initialise(currentUser) {
+  if (currentUser) {
+    const db = firebase.database()
+    db.ref(`users/${currentUser.uid}`).once('value', snapshot => {
+      if (!snapshot.val()) {
+        db.ref(`users/${currentUser.uid}`).set({ name: currentUser.displayName })
+      }
+    })
+  }
+}
+
+initialise(firebase.auth().currentUser)
+firebase.auth().onAuthStateChanged(initialise)
+
 export default app
