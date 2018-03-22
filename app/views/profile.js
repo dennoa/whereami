@@ -4,15 +4,17 @@ import Form from 'react-jsonschema-form'
 
 import onValue from 'Helpers/on-value'
 
-const yourDetailsSchema = {
+const myDetailsSchema = {
   type: 'object',
   properties: {
     name: { type: 'string', title: 'Your name' },
+    markerColor: { type: 'string', title: 'Your marker colour' },
   },
 }
 
-const yourDetailsUiSchema = {
+const myDetailsUiSchema = {
   name: { 'ui:placeholder': 'Enter the name to show on the map for yourself' },
+  markerColor: { 'ui:widget': 'color' },
 }
 
 class Connect extends Component {
@@ -22,21 +24,19 @@ class Connect extends Component {
       myConnectionId: undefined,
       myDetails: {},
     }
-    this.saveYourDetails = this.saveYourDetails.bind(this)
+    this.save = this.save.bind(this)
     this.handleUserChange = this.handleUserChange.bind(this)
   }
 
   componentWillMount() {
-    const auth = firebase.auth()
-    this.handleUserChange(auth.currentUser)
-    auth.onAuthStateChanged(this.handleUserChange)
+    firebase.auth().onAuthStateChanged(this.handleUserChange)
   }
 
-  saveYourDetails(form) {
-    const { name } = form.formData
+  save(form) {
+    const { name, markerColor } = form.formData
     const { currentUser } = firebase.auth()
     if (name && currentUser) {
-      const myDetails = { name }
+      const myDetails = { name, markerColor }
       this.setState({ myDetails })
       const db = firebase.database()
       db.ref(`users/${currentUser.uid}`).set(myDetails)
@@ -47,7 +47,7 @@ class Connect extends Component {
     if (currentUser) {
       this.setState({ myConnectionId: currentUser.uid })
       onValue(`users/${currentUser.uid}`, val => {
-        const myDetails = val || { name: currentUser.displayName }
+        const myDetails = val || { name: currentUser.displayName, markerColor: '#ff0000' }
         this.setState({ myDetails })
       })
     }
@@ -57,18 +57,22 @@ class Connect extends Component {
     if (!this.state.myConnectionId) {
       return <div className="container-fluid section">You need to login first!</div>
     }
+
+    const { name } = this.state.myDetails
+    const names = name ? `${name}'s` : 'Your'
+
     return (
       <div className="container-fluid section">
         <p>
-          Your connection id is <code>{this.state.myConnectionId}</code>
+          {names} connection id: <code>{this.state.myConnectionId}</code>
         </p>
         <hr />
         <Form
-          schema={yourDetailsSchema}
-          uiSchema={yourDetailsUiSchema}
+          schema={myDetailsSchema}
+          uiSchema={myDetailsUiSchema}
           formData={this.state.myDetails}
           showErrorList={false}
-          onSubmit={this.saveYourDetails}
+          onSubmit={this.save}
         >
           <button type="submit" className="btn btn-primary btn-lg btn-block">
             Save

@@ -30,9 +30,7 @@ class Connect extends Component {
   }
 
   componentWillMount() {
-    const auth = firebase.auth()
-    this.handleUserChange(auth.currentUser)
-    auth.onAuthStateChanged(this.handleUserChange)
+    firebase.auth().onAuthStateChanged(this.handleUserChange)
   }
 
   connectWith(form) {
@@ -40,14 +38,15 @@ class Connect extends Component {
     const { currentUser } = firebase.auth()
     if (id && currentUser) {
       const db = firebase.database()
+      const markerColor = '#ff0000'
       let name = this.state.myDetails.name || currentUser.displayName
-      const conn1 = db.ref(`connections/${id}/${currentUser.uid}`).set({ name })
+      const conn1 = db.ref(`connections/${id}/${currentUser.uid}`).set({ name, markerColor })
       conn1.then(() => {
         const user = db.ref(`users/${id}`).once('value')
         user.then(snashot => {
           const val = snashot.val() || {}
           name = val.name || 'unknown'
-          db.ref(`connections/${currentUser.uid}/${id}`).set({ name })
+          db.ref(`connections/${currentUser.uid}/${id}`).set({ name, markerColor })
           const myConnections = this.state.myConnections.filter(existing => existing.id !== id).concat([{ id, name }])
           this.setState({ myConnections })
         })

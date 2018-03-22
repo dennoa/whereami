@@ -1,8 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps'
+import { compose, withProps, withStateHandlers } from 'recompose'
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps'
 
-const WhereMap = withGoogleMap(props => (
+const WhereMap = compose(
+  withProps({
+    googleMapURL:
+      'https://maps.googleapis.com/maps/api/js?key=AIzaSyAf79r2oUgm8nrNXr_bgcoulliocHQoExY&libraries=places',
+    loadingElement: <div style={{ height: '100%' }} />,
+    containerElement: <div style={{ height: `${Math.round(window.screen.availHeight * 0.75)}px` }} />,
+    mapElement: <div style={{ height: '100%' }} />,
+  }),
+  withStateHandlers(
+    () => ({
+      isOpen: false,
+    }),
+    {
+      onToggleOpen: ({ isOpen }) => () => ({ isOpen: !isOpen }),
+    }
+  ),
+  withScriptjs,
+  withGoogleMap
+)(props => (
   <GoogleMap defaultZoom={props.defaultZoom || 15} center={props.center}>
     {(props.markers || []).map(marker => (
       <Marker
@@ -11,7 +30,14 @@ const WhereMap = withGoogleMap(props => (
         label={marker.label}
         icon={marker.icon}
         title={marker.title}
-      />
+        onClick={props.onToggleOpen}
+      >
+        {props.isOpen && (
+          <InfoWindow onCloseClick={props.onToggleOpen}>
+            <div>{marker.title}</div>
+          </InfoWindow>
+        )}
+      </Marker>
     ))}
   </GoogleMap>
 ))

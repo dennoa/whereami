@@ -1,14 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => (
-  <footer className="footer bg-dark text-white section">
-    <div className="container-fluid">
-      <nav className="nav flex-column">
-        <h4 className="footer-title">Help</h4>
-        <a href="/help-how" className="footer-item">
-          How do I use this?
-        </a>
-      </nav>
+  <footer className="footer bg-dark text-white">
+    <div className="container-fluid section">
+      <Link to="/help" className="footer-item">
+        Help
+      </Link>
     </div>
   </footer>
 )

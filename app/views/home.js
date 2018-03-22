@@ -5,7 +5,7 @@ import moment from 'moment'
 import WhereMap from 'Components/whereMap'
 import onValue from 'Helpers/on-value'
 
-const whenFormat = 'h:mma ddd Do MMMM YYYY'
+const whenFormat = 'h:mma, dddd Do MMMM YYYY'
 
 class Home extends Component {
   constructor(props) {
@@ -55,7 +55,7 @@ class Home extends Component {
       this.setState({ myId: currentUser.uid })
       onValue(`connections/${currentUser.uid}`, connValue => {
         const connVal = connValue || {}
-        const myConnections = Object.keys(connVal).map(id => ({ id, name: connVal[id].name }))
+        const myConnections = Object.keys(connVal).map(id => Object.assign({ id }, connVal[id]))
         myConnections.forEach(conn => {
           onValue(`locations/${conn.id}`, locValue => {
             conn.location = locValue
@@ -64,7 +64,7 @@ class Home extends Component {
         })
       })
       onValue(`users/${currentUser.uid}`, val => {
-        const myDetails = val || { name: currentUser.displayName }
+        const myDetails = val || { name: currentUser.displayName, markerColor: '#ff0000' }
         this.setState({ myDetails })
       })
     }
@@ -82,26 +82,24 @@ class Home extends Component {
       position: location,
       label: name[0],
       title: `${name} at ${moment(location.when).format(whenFormat)}`,
+      icon: {
+        path: 'M-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0',
+        fillColor: conn.markerColor || '#ff0000',
+        fillOpacity: 0.6,
+        strokeWeight: 0,
+        scale: 1,
+      },
     }
   }
 
   render() {
     const { myId, myDetails, myLocation, myConnections } = this.state
-    const markers = [this.toMarker({ id: myId, location: myLocation, name: myDetails.name })]
+    const markers = [
+      this.toMarker({ id: myId, location: myLocation, name: myDetails.name, markerColor: myDetails.markerColor }),
+    ]
     myConnections.forEach(conn => markers.push(this.toMarker(conn)))
 
-    return (
-      <div>
-        <div className="container-fluid">
-          <WhereMap
-            containerElement={<div style={{ height: '400px' }} />}
-            mapElement={<div style={{ height: '100%' }} />}
-            center={myLocation}
-            markers={markers}
-          />
-        </div>
-      </div>
-    )
+    return <WhereMap center={myLocation} markers={markers} />
   }
 }
 

@@ -16,7 +16,7 @@ function initialise(currentUser) {
     const db = firebase.database()
     db.ref(`users/${currentUser.uid}`).once('value', snapshot => {
       if (!snapshot.val()) {
-        db.ref(`users/${currentUser.uid}`).set({ name: currentUser.displayName })
+        db.ref(`users/${currentUser.uid}`).set({ name: currentUser.displayName, markerColor: '#ff0000' })
       }
     })
   }
