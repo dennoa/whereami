@@ -11,7 +11,7 @@ const Navbar = props => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div className="container">
+      <div className="container-fluid">
         <Link to="/" className="navbar-brand">
           Where am I
         </Link>
@@ -29,24 +29,20 @@ const Navbar = props => {
         <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
           {props.currentUser ? (
             <div className="navbar-nav">
-              <div className="nav-item dropdown">
-                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <button className="btn btn-link dropdown-item" onClick={logout}>
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="navbar-nav">
-              <Link className="nav-item nav-link" to="/login">
-                Login
-              </Link>
               <Link className="nav-item nav-link" to="/connect">
                 Connect
               </Link>
               <Link className="nav-item nav-link" to="/profile">
                 Profile
+              </Link>
+              <button className="btn btn-link nav-item nav-link" onClick={logout}>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="navbar-nav">
+              <Link className="nav-item nav-link" to="/login">
+                Login
               </Link>
             </div>
           )}

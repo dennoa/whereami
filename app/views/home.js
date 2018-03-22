@@ -92,7 +92,7 @@ class Home extends Component {
 
     return (
       <div>
-        <div className="container">
+        <div className="container-fluid">
           <WhereMap
             containerElement={<div style={{ height: '400px' }} />}
             mapElement={<div style={{ height: '100%' }} />}

@@ -13,7 +13,7 @@ const uiConfig = {
 }
 
 const Login = () => (
-  <div className="container">
+  <div className="container-fluid">
     <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
   </div>
 )

@@ -22,8 +22,9 @@ class ManageConnection extends Component {
       otherConnectionId: props.match.params.id,
       otherConnectionDetails: {},
     }
-    this.update = this.update.bind(this)
-    this.removeConnected = this.removeConnected.bind(this)
+    this.backToConnect = this.backToConnect.bind(this)
+    this.save = this.save.bind(this)
+    this.remove = this.remove.bind(this)
     this.handleUserChange = this.handleUserChange.bind(this)
   }
 
@@ -33,22 +34,29 @@ class ManageConnection extends Component {
     auth.onAuthStateChanged(this.handleUserChange)
   }
 
-  update(form) {
+  backToConnect() {
+    this.props.history.push('/connect')
+  }
+
+  save(form) {
     const { name } = form.formData
     const { myConnectionId, otherConnectionId } = this.state
     if (myConnectionId && otherConnectionId) {
       const db = firebase.database()
       db.ref(`connections/${myConnectionId}/${otherConnectionId}`).set({ name })
+      this.backToConnect()
     }
   }
 
-  removeConnected() {
+  remove() {
     const { myConnectionId, otherConnectionId } = this.state
     if (myConnectionId && otherConnectionId) {
       const db = firebase.database()
       db.ref(`connections/${myConnectionId}/${otherConnectionId}`).remove()
       db.ref(`connections/${otherConnectionId}/${myConnectionId}`).remove()
+      this.backToConnect()
     }
+    return false
   }
 
   handleUserChange(currentUser) {
@@ -65,10 +73,10 @@ class ManageConnection extends Component {
 
   render() {
     if (!this.state.myConnectionId) {
-      return <div className="container section">Loading...</div>
+      return <div className="container-fluid section">Loading...</div>
     }
     return (
-      <div className="container section">
+      <div className="container-fluid section">
         <p>
           Their connection id is <code>{this.state.otherConnectionId}</code>
         </p>
@@ -77,20 +85,17 @@ class ManageConnection extends Component {
           uiSchema={uiSchema}
           showErrorList={false}
           formData={this.state.otherConnectionDetails}
-          onSubmit={this.update}
+          onSubmit={this.save}
         >
-          <div className="row">
-            <div className="col-sm-6">
-              <button type="submit" className="btn btn-primary btn-lg">
-                Save
-              </button>
-            </div>
-            <div className="col-sm-6 text-right">
-              <button className="btn btn-danger btn-lg" onClick={this.removeConnected}>
-                Remove
-              </button>
-            </div>
-          </div>
+          <button type="submit" className="btn btn-primary btn-lg btn-block">
+            Save
+          </button>
+          <button type="button" className="btn btn-danger btn-lg btn-block" onClick={this.remove}>
+            Remove
+          </button>
+          <button type="button" className="btn btn-secondary btn-lg btn-block" onClick={this.backToConnect}>
+            Leave it
+          </button>
         </Form>
       </div>
     )
@@ -98,6 +103,7 @@ class ManageConnection extends Component {
 }
 
 ManageConnection.propTypes = {
+  history: PropTypes.object,
   match: PropTypes.object,
 }
 

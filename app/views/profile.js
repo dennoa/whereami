@@ -55,10 +55,10 @@ class Connect extends Component {
 
   render() {
     if (!this.state.myConnectionId) {
-      return <div className="container section">You need to login first!</div>
+      return <div className="container-fluid section">You need to login first!</div>
     }
     return (
-      <div className="container section">
+      <div className="container-fluid section">
         <p>
           Your connection id is <code>{this.state.myConnectionId}</code>
         </p>

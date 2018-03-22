@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Error404 = () => (
-  <div className="container section">
+  <div className="container-fluid section">
     <div className="row justify-content-center">
       <div className="card col-12 col-lg-6 mb-5 mt-5">
         <div className="card-body text-center mb-4">
