@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
 import Form from 'react-jsonschema-form'
+import { ToastContainer, toast } from 'react-toastify'
 
 import onValue from 'Helpers/on-value'
 
@@ -38,8 +39,11 @@ class Connect extends Component {
     if (name && currentUser) {
       const myDetails = { name, markerColor }
       this.setState({ myDetails })
-      const db = firebase.database()
-      db.ref(`users/${currentUser.uid}`).set(myDetails)
+      firebase
+        .database()
+        .ref(`users/${currentUser.uid}`)
+        .set(myDetails)
+        .then(() => toast('Saved!'))
     }
   }
 
@@ -54,8 +58,8 @@ class Connect extends Component {
   }
 
   render() {
-    if (!this.state.myConnectionId) {
-      return <div className="container-fluid section">You need to login first!</div>
+    if (!firebase.auth().currentUser) {
+      return <div className="container section">Please login</div>
     }
 
     const { name } = this.state.myDetails
@@ -63,6 +67,7 @@ class Connect extends Component {
 
     return (
       <div className="container-fluid section">
+        <ToastContainer />
         <p>
           {names} connection id: <code>{this.state.myConnectionId}</code>
         </p>

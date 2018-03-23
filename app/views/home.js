@@ -30,7 +30,7 @@ class Home extends Component {
       onValue(`connections/${currentUser.uid}`, connValue => {
         const connVal = connValue || {}
         const myConnections = Object.keys(connVal).map(id => Object.assign({ id }, connVal[id]))
-        myConnections.forEach(conn => {
+        myConnections.filter(conn => !conn.hide).forEach(conn => {
           onValue(`locations/${conn.id}`, locValue => {
             conn.location = locValue
             this.setState({ myConnections })
@@ -66,9 +66,21 @@ class Home extends Component {
   }
 
   render() {
+    if (!firebase.auth().currentUser) {
+      return <div className="container section">Please login</div>
+    }
+
     const { myId, myDetails, myLocation, myConnections } = this.state
     if (!myId || !myDetails || !myLocation) {
-      return <div className="container section">Loading...</div>
+      return (
+        <div className="container section">
+          <p>Loading...</p>
+          <p>
+            If this takes more than 30 seconds or so you could try refreshing the page and logging in again. If still no
+            luck, there might be a problem with your connection.
+          </p>
+        </div>
+      )
     }
     const markers = [
       this.toMarker({ id: myId, location: myLocation, name: myDetails.name, markerColor: myDetails.markerColor }),

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Router, Route } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import createHistory from 'history/createBrowserHistory'
 import ReactGA from 'react-ga'
 
@@ -7,6 +7,7 @@ import Navbar from 'Components/navbar'
 import Footer from 'Components/footer'
 import Home from 'Views/home'
 import Login from 'Views/login'
+import Logout from 'Views/logout'
 import Connect from 'Views/connect'
 import ManageConnection from 'Views/manage-connection'
 import Profile from 'Views/profile'
@@ -32,13 +33,16 @@ class Routes extends Component {
       <Router history={history}>
         <div>
           <Navbar history={history} />
-          <Route path="/" exact component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/connect" component={Connect} />
-          <Route path="/manage-connection/:id" component={ManageConnection} history={history} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/help" component={Help} />
-          <Route path="/404" component={Error404} />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/logout" component={Logout} />
+            <Route path="/connect" component={Connect} />
+            <Route path="/manage-connection/:id" component={ManageConnection} history={history} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/help" component={Help} />
+            <Route component={Error404} />
+          </Switch>
           <Footer />
           <ScrollTop />
         </div>

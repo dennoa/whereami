@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import firebase from 'firebase'
 import Form from 'react-jsonschema-form'
+import { ToastContainer, toast } from 'react-toastify'
 
 import onValue from 'Helpers/on-value'
 
@@ -20,12 +21,10 @@ class Connect extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      myConnectionId: undefined,
       myDetails: {},
       myConnections: [],
     }
     this.connectWith = this.connectWith.bind(this)
-    this.removeConnected = this.removeConnected.bind(this)
     this.handleUserChange = this.handleUserChange.bind(this)
     firebase.auth().onAuthStateChanged(this.handleUserChange)
   }
@@ -43,7 +42,10 @@ class Connect extends Component {
         user.then(snashot => {
           const val = snashot.val() || {}
           name = val.name || 'unknown'
-          db.ref(`connections/${currentUser.uid}/${id}`).set({ name, markerColor })
+          db
+            .ref(`connections/${currentUser.uid}/${id}`)
+            .set({ name, markerColor })
+            .then(() => toast('Connected!'))
           const myConnections = this.state.myConnections.filter(existing => existing.id !== id).concat([{ id, name }])
           this.setState({ myConnections })
         })
@@ -51,22 +53,8 @@ class Connect extends Component {
     }
   }
 
-  removeConnected(id) {
-    return () => {
-      const { currentUser } = firebase.auth()
-      if (currentUser) {
-        const myConnections = this.state.myConnections.filter(existing => existing === id)
-        this.setState({ myConnections })
-        const db = firebase.database()
-        db.ref(`connections/${currentUser.uid}/${id}`).remove()
-        db.ref(`connections/${id}/${currentUser.uid}`).remove()
-      }
-    }
-  }
-
   handleUserChange(currentUser) {
     if (currentUser) {
-      this.setState({ myConnectionId: currentUser.uid })
       onValue(`connections/${currentUser.uid}`, value => {
         const val = value || {}
         const myConnections = Object.keys(val).map(id => ({ id, name: val[id].name }))
@@ -80,12 +68,13 @@ class Connect extends Component {
   }
 
   render() {
-    if (!this.state.myConnectionId) {
-      return <div className="container section">You need to login first!</div>
+    if (!firebase.auth().currentUser) {
+      return <div className="container section">Please login</div>
     }
     return (
       <div className="container">
         <div className="section">
+          <ToastContainer />
           <Form
             schema={connectWithSchema}
             uiSchema={connectWithUiSchema}

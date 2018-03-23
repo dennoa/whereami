@@ -8,12 +8,14 @@ const schema = {
   properties: {
     name: { type: 'string', title: 'Name' },
     markerColor: { type: 'string', title: 'Marker colour' },
+    hide: { type: 'boolean', title: 'Hide' },
   },
 }
 
 const uiSchema = {
   name: { 'ui:placeholder': 'Enter a name for this person' },
   markerColor: { 'ui:widget': 'color' },
+  hide: { 'ui:widget': 'radio' },
 }
 
 class ManageConnection extends Component {
@@ -39,11 +41,11 @@ class ManageConnection extends Component {
   }
 
   save(form) {
-    const { name, markerColor } = form.formData
+    const { name, markerColor, hide } = form.formData
     const { myConnectionId, otherConnectionId } = this.state
     if (myConnectionId && otherConnectionId) {
       const db = firebase.database()
-      db.ref(`connections/${myConnectionId}/${otherConnectionId}`).set({ name, markerColor })
+      db.ref(`connections/${myConnectionId}/${otherConnectionId}`).set({ name, markerColor, hide })
       this.backToConnect()
     }
   }
@@ -72,6 +74,10 @@ class ManageConnection extends Component {
   }
 
   render() {
+    if (!firebase.auth().currentUser) {
+      return <div className="container section">Please login</div>
+    }
+
     const { name } = this.state.otherConnectionDetails
     const names = name ? `${name}'s` : 'Their'
 

@@ -8,16 +8,11 @@ class Navbar extends Component {
     this.state = {
       currentUser: undefined,
     }
-    this.logout = this.logout.bind(this)
     this.handleUserChange = this.handleUserChange.bind(this)
   }
 
   componentWillMount() {
     firebase.auth().onAuthStateChanged(this.handleUserChange)
-  }
-
-  logout() {
-    firebase.auth().signOut()
   }
 
   handleUserChange(currentUser) {
@@ -51,7 +46,7 @@ class Navbar extends Component {
                 <Link className="nav-item nav-link" to="/profile">
                   Profile
                 </Link>
-                <Link className="nav-item nav-link" to="/" onClick={this.logout}>
+                <Link className="nav-item nav-link" to="/logout">
                   Logout
                 </Link>
               </div>
