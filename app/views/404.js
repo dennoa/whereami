@@ -27,7 +27,7 @@ const Error404 = () => (
             </g>
           </svg>
           <h2 className="mt-2 mb-4">Oops!</h2>
-          <p>Something strange has happened, please follow your way back and try this operation again.</p>
+          <p>Nothing to see here.</p>
           <Link to="/">Return to the homepage.</Link>
         </div>
       </div>

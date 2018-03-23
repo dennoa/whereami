@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import firebase from 'firebase'
 import Form from 'react-jsonschema-form'
+
+import noUndefined from 'Helpers/no-undefined'
 
 const schema = {
   type: 'object',
@@ -26,6 +29,7 @@ class ManageConnection extends Component {
       otherConnectionId: props.match.params.id,
       otherConnectionDetails: {},
     }
+    this.onFormError = this.onFormError.bind(this)
     this.backToConnect = this.backToConnect.bind(this)
     this.save = this.save.bind(this)
     this.remove = this.remove.bind(this)
@@ -36,16 +40,20 @@ class ManageConnection extends Component {
     firebase.auth().onAuthStateChanged(this.handleUserChange)
   }
 
+  onFormError(errors) {
+    console.log(errors)
+  }
+
   backToConnect() {
     this.props.history.push('/connect')
   }
 
   save(form) {
-    const { name, markerColor, hide } = form.formData
     const { myConnectionId, otherConnectionId } = this.state
     if (myConnectionId && otherConnectionId) {
+      const conn = Object.assign({ name: 'Unknown', markerColor: '#ff0000', hide: false }, noUndefined(form.formData))
       const db = firebase.database()
-      db.ref(`connections/${myConnectionId}/${otherConnectionId}`).set({ name, markerColor, hide })
+      db.ref(`connections/${myConnectionId}/${otherConnectionId}`).set(conn)
       this.backToConnect()
     }
   }
@@ -75,7 +83,11 @@ class ManageConnection extends Component {
 
   render() {
     if (!firebase.auth().currentUser) {
-      return <div className="container section">Please login</div>
+      return (
+        <div className="container section">
+          Please <Link to="/login">login</Link>
+        </div>
+      )
     }
 
     const { name } = this.state.otherConnectionDetails

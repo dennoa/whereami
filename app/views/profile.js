@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import firebase from 'firebase'
 import Form from 'react-jsonschema-form'
 import { ToastContainer, toast } from 'react-toastify'
 
+import noUndefined from 'Helpers/no-undefined'
 import onValue from 'Helpers/on-value'
 
 const myDetailsSchema = {
@@ -34,24 +36,20 @@ class Connect extends Component {
   }
 
   save(form) {
-    const { name, markerColor } = form.formData
-    const { currentUser } = firebase.auth()
-    if (name && currentUser) {
-      const myDetails = { name, markerColor }
-      this.setState({ myDetails })
-      firebase
-        .database()
-        .ref(`users/${currentUser.uid}`)
-        .set(myDetails)
-        .then(() => toast('Saved!'))
-    }
+    const myDetails = Object.assign({ name: 'Unkonwn', markerColor: '#ff0000' }, noUndefined(form.formData))
+    this.setState({ myDetails })
+    firebase
+      .database()
+      .ref(`users/${firebase.auth().currentUser.uid}`)
+      .set(myDetails)
+      .then(() => toast('Saved!'))
   }
 
   handleUserChange(currentUser) {
     if (currentUser) {
       this.setState({ myConnectionId: currentUser.uid })
       onValue(`users/${currentUser.uid}`, val => {
-        const myDetails = val || { name: currentUser.displayName, markerColor: '#ff0000' }
+        const myDetails = val || {}
         this.setState({ myDetails })
       })
     }
@@ -59,7 +57,11 @@ class Connect extends Component {
 
   render() {
     if (!firebase.auth().currentUser) {
-      return <div className="container section">Please login</div>
+      return (
+        <div className="container section">
+          Please <Link to="/login">login</Link>
+        </div>
+      )
     }
 
     const { name } = this.state.myDetails

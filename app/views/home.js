@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import firebase from 'firebase'
 import moment from 'moment'
 
@@ -67,7 +68,11 @@ class Home extends Component {
 
   render() {
     if (!firebase.auth().currentUser) {
-      return <div className="container section">Please login</div>
+      return (
+        <div className="container section">
+          Please <Link to="/login">login</Link>
+        </div>
+      )
     }
 
     const { myId, myDetails, myLocation, myConnections } = this.state
