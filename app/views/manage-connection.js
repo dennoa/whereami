@@ -94,7 +94,7 @@ class ManageConnection extends Component {
             Remove
           </button>
           <button type="button" className="btn btn-secondary btn-lg btn-block" onClick={this.backToConnect}>
-            Leave it
+            No Change
           </button>
         </Form>
       </div>

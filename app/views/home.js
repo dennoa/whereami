@@ -58,7 +58,7 @@ class Home extends Component {
       icon: {
         path: 'M-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0',
         fillColor: conn.markerColor || '#ff0000',
-        fillOpacity: 0.6,
+        fillOpacity: 1,
         strokeWeight: 0,
         scale: 1,
       },
