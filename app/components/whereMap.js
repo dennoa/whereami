@@ -22,7 +22,7 @@ const WhereMap = compose(
   withScriptjs,
   withGoogleMap
 )(props => (
-  <GoogleMap defaultZoom={props.defaultZoom || 15} center={props.center}>
+  <GoogleMap defaultZoom={props.defaultZoom || 15} defaultCenter={props.defaultCenter}>
     {(props.markers || []).map(marker => (
       <Marker
         key={marker.key}
@@ -43,7 +43,7 @@ const WhereMap = compose(
 ))
 
 WhereMap.propTypes = {
-  center: PropTypes.object.isRequired,
+  defaultCenter: PropTypes.object.isRequired,
   defaultZoom: PropTypes.number,
   markers: PropTypes.array,
 }

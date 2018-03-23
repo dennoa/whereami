@@ -27,9 +27,6 @@ class Connect extends Component {
     this.connectWith = this.connectWith.bind(this)
     this.removeConnected = this.removeConnected.bind(this)
     this.handleUserChange = this.handleUserChange.bind(this)
-  }
-
-  componentWillMount() {
     firebase.auth().onAuthStateChanged(this.handleUserChange)
   }
 

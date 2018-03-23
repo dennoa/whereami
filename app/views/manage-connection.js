@@ -30,7 +30,7 @@ class ManageConnection extends Component {
     this.handleUserChange = this.handleUserChange.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     firebase.auth().onAuthStateChanged(this.handleUserChange)
   }
 
