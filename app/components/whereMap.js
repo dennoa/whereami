@@ -5,8 +5,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from 'reac
 
 const WhereMap = compose(
   withProps({
-    googleMapURL:
-      'https://maps.googleapis.com/maps/api/js?key=AIzaSyAf79r2oUgm8nrNXr_bgcoulliocHQoExY&libraries=places',
+    googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=my_key&libraries=places',
     loadingElement: <div style={{ height: '100%' }} />,
     containerElement: <div style={{ height: `${Math.round(window.screen.availHeight * 0.75)}px` }} />,
     mapElement: <div style={{ height: '100%' }} />,
@@ -24,14 +23,7 @@ const WhereMap = compose(
 )(props => (
   <GoogleMap defaultZoom={props.defaultZoom || 15} defaultCenter={props.defaultCenter}>
     {(props.markers || []).map(marker => (
-      <Marker
-        key={marker.key}
-        position={marker.position}
-        label={marker.label}
-        icon={marker.icon}
-        title={marker.title}
-        onClick={props.onToggleOpen}
-      >
+      <Marker key={marker.key} position={marker.position} label={marker.label} icon={marker.icon} title={marker.title} onClick={props.onToggleOpen}>
         {props.isOpen && (
           <InfoWindow onCloseClick={props.onToggleOpen}>
             <div>{marker.title}</div>

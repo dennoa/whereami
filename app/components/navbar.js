@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import firebase from 'firebase'
+import NoSleep from 'nosleep.js/dist/NoSleep'
 
 class Navbar extends Component {
   constructor(props) {
     super(props)
     this.state = {
       currentUser: undefined,
+      wakeLockOn: false,
     }
     this.handleUserChange = this.handleUserChange.bind(this)
+    this.toggleNoSleep = this.toggleNoSleep.bind(this)
+    this.noSleep = new NoSleep()
   }
 
   componentWillMount() {
@@ -17,6 +21,15 @@ class Navbar extends Component {
 
   handleUserChange(currentUser) {
     this.setState({ currentUser })
+  }
+
+  toggleNoSleep() {
+    if (this.state.wakeLockOn) {
+      this.noSleep.disable()
+    } else {
+      this.noSleep.enable()
+    }
+    this.setState({ wakeLockOn: !this.state.wakeLockOn })
   }
 
   render() {
@@ -40,6 +53,9 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             {this.state.currentUser ? (
               <div className="navbar-nav">
+                <Link className="nav-item nav-link" onClick={this.toggleNoSleep} to="/">
+                  Awake {this.state.wakeLockOn ? 'Yes' : 'No'}
+                </Link>
                 <Link className="nav-item nav-link" to="/connect">
                   Connect
                 </Link>
